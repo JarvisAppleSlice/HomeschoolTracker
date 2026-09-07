@@ -13,7 +13,8 @@ with st.sidebar:
         
           student = st.selectbox(
             'Student:',
-            ('Allen', 'Rafael', 'Chance'))
+            st.session_state.students
+            )
         
           subject = st.selectbox(
             'Subject:',

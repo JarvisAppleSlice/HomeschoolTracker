@@ -1,11 +1,7 @@
 import random
 from datetime import date, timedelta
 
-students = ['Allen', 'Rafael', 'Chance']
-
-subjects = ['Math', 'Reading', 'Writing', 'Science', 'History', 'Typing', 'Geography', 'Art',]
-
-def generate_test_lessons(count = 100):
+def generate_test_lessons(students, subjects, count = 100):
 
     lessons = []
 

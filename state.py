@@ -12,3 +12,7 @@ def initialize_session_state():
    if 'students' not in st.session_state:
 
       st.session_state.students = []
+
+   if 'subjects' not in st.session_state:
+
+      st.session_state.subjects = []

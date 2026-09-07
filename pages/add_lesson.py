@@ -18,7 +18,8 @@ with st.sidebar:
         
           subject = st.selectbox(
             'Subject:',
-            ('Math', 'Reading', 'Writing', 'Science', 'History', 'Typing', 'Geography'))
+            st.session_state.subjects
+            )
 
           time = st.slider(
             'Time Spent:',

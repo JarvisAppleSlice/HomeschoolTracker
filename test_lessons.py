@@ -19,5 +19,3 @@ def generate_test_lessons(count = 100):
         lessons.append(lesson)
 
     return lessons   
-
-

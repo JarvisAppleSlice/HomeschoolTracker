@@ -1,10 +1,9 @@
 import streamlit as st
 from datetime import date
+from state import initialize_session_state
+from utilities import format_time
 
-
-if 'sessions' not in st.session_state:
-     
-     st.session_state.sessions = []
+initialize_session_state()
 
 with st.sidebar:
     
@@ -33,23 +32,9 @@ with st.sidebar:
           
           submitted = st.form_submit_button('Record Session')
 
-
 if submitted:
     
-    if time < 60:
-     time_display = f'{time} min'
-    else:
-     hrs = time // 60
-     mins = time % 60
-
-     if mins == 0 and hrs == 1:
-          time_display = f'{hrs} hr'
-     elif mins == 0:
-          time_display = f'{hrs} hrs'    
-     elif hrs > 1:
-          time_display = f'{hrs} hrs {mins} mins'
-     else:
-          time_display = f'{hrs} hr {mins} mins'    
+    time_display = format_time(time)
 
     st.session_state.sessions.append({
          'Student': student,

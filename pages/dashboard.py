@@ -10,6 +10,28 @@ from analytics import data_analytics
 
 initialize_session_state()
 
+# Lessons Filter #
+
+with st.expander('Lessons'):
+
+    st.title('View Lessons')
+
+    student = st.selectbox(
+        'Student:',
+        ['ALL'] + st.session_state.students
+    )
+    
+    df = pd.DataFrame(st.session_state.sessions)
+
+    if student != 'ALL':
+
+        df = df[df['Student'] == student]
+
+    st.write(f"Lessons for '{student}': {len(df)}")
+
+    st.dataframe(df)
+
+
 if len(st.session_state.sessions) > 0:
     df = pd.DataFrame(st.session_state.sessions)
 

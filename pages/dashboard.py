@@ -18,7 +18,8 @@ with st.expander('Lessons'):
 
     student = st.selectbox(
         'Student:',
-        ['ALL'] + st.session_state.students
+        ['ALL'] + st.session_state.students,
+        key='view_lessons'
     )
     
     df = pd.DataFrame(st.session_state.sessions)
@@ -30,6 +31,45 @@ with st.expander('Lessons'):
     st.write(f"Lessons for '{student}': {len(df)}")
 
     st.dataframe(df)
+    
+# Lessons editor #
+
+with st.expander('Lesson Management'):
+
+    st.title('Manage Lessons')
+
+    student = st.selectbox(
+        'Student:',
+        ['ALL'] + st.session_state.students,
+        key='manage_lessons'
+    )
+    
+    df = pd.DataFrame(st.session_state.sessions)
+
+    if student != 'ALL':
+
+        df = df[df['Student'] == student]
+
+    st.write(f"Lessons for '{student}': {len(df)}")
+
+    lesson_choices = []
+
+    for index, row in df.iterrows():
+            
+            lesson_description = (f"{row['Student']}-{row['Subject']}-{row['Date']}")
+
+            lesson_choices.append((lesson_description, row['Id']))
+
+    selected_lesson = st.selectbox(
+        'Select a Lesson:',
+        lesson_choices,
+        format_func=lambda option: option[0]
+    )
+
+    for lesson in st.session_state.sessions:
+         if lesson['Id'] == selected_lesson[1]:
+              if st.button('Delete'):
+                   st.write('Deleted')
 
 
 if len(st.session_state.sessions) > 0:

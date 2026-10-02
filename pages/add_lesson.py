@@ -2,6 +2,7 @@ import streamlit as st
 from datetime import date
 from state import initialize_session_state
 from utilities import format_time
+from uuid import uuid4
 
 initialize_session_state()
 
@@ -39,6 +40,7 @@ if submitted:
     time_display = format_time(time)
 
     st.session_state.sessions.append({
+         'Id': uuid4(),
          'Student': student,
          'Subject': subject,
          'Time': time,

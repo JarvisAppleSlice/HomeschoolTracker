@@ -24,7 +24,7 @@ with st.expander('Lessons'):
     
     df = pd.DataFrame(st.session_state.sessions)
 
-    if student != 'ALL':
+    if student != 'ALL' and not df.empty:
 
         df = df[df['Student'] == student]
 
@@ -46,7 +46,8 @@ with st.expander('Lesson Management'):
     
     df = pd.DataFrame(st.session_state.sessions)
 
-    if student != 'ALL':
+    # An empty DataFrame has no 'Student' column, so only filter when there is data.
+    if student != 'ALL' and not df.empty:
 
         df = df[df['Student'] == student]
 
@@ -55,21 +56,36 @@ with st.expander('Lesson Management'):
     lesson_choices = []
 
     for index, row in df.iterrows():
-            
-            lesson_description = (f"{row['Student']}-{row['Subject']}-{row['Date']}")
 
-            lesson_choices.append((lesson_description, row['Id']))
+        lesson_description = f"{row['Student']} - {row['Subject']} - {row['Date']}"
 
-    selected_lesson = st.selectbox(
-        'Select a Lesson:',
-        lesson_choices,
-        format_func=lambda option: option[0]
-    )
+        lesson_choices.append((lesson_description, row['Id']))
 
-    for lesson in st.session_state.sessions:
-         if lesson['Id'] == selected_lesson[1]:
-              if st.button('Delete'):
-                   st.write('Deleted')
+    # Nothing to pick from: show a message instead of an empty dropdown.
+    if not lesson_choices:
+
+        st.info('No lessons to manage yet.')
+
+    else:
+
+        selected_lesson = st.selectbox(
+            'Select a Lesson:',
+            lesson_choices,
+            format_func=lambda option: option[0]
+        )
+
+        if st.button('Delete'):
+
+            selected_id = selected_lesson[1]
+
+            # Rebuild the list, keeping every lesson EXCEPT the selected one.
+            st.session_state.sessions = [
+                lesson for lesson in st.session_state.sessions
+                if lesson['Id'] != selected_id
+            ]
+
+            # Re-run the page so the table, dropdown and charts update right away.
+            st.rerun()
 
 
 if len(st.session_state.sessions) > 0:
